@@ -3,7 +3,6 @@ const inquirer = require('inquirer');
 const cTable = require('console.table');
 
 const db = require('./db/connection');
-const Connection = require("mysql2/typings/mysql/lib/Connection");
 
 db.connect(err => {
     if (err) throw err;
@@ -32,17 +31,17 @@ const promptUser = () => {
             choices: [
                 'View all departments', 
                 'View all roles', 
-                'View all employees', 
+                'View all employees',
+                'View employees by department',
+                'View department budgets',
                 'Add a department', 
                 'Add a role', 
                 'Add an employee', 
                 'Update an employee role',
                 'Update an employee manager',
-                'View employees by department',
                 'Delete a department',
                 'Delete a role',
                 'Delete an employee',
-                'View department budgets',
                 'No Action'
             ]
 
