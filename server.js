@@ -1,6 +1,8 @@
 const inquirer = require('inquirer');
 const db = require('./config/connection');
 const cTable = require('console.table');
+const { allowedNodeEnvironmentFlags } = require('process');
+const { ADDRGETNETWORKPARAMS } = require('dns');
 
 
 // app.use routes go here
@@ -52,43 +54,43 @@ const promptUser = () => {
     .then((answers) => {
         const {choices} = answers;
         if (choices === 'View all Departments') {
-            viewAllDepartments();
+            viewAllDeps();
         }
         if (choices === 'View all Roles') {
             viewAllRoles();
         }
-        if (choices === 'View all Employess') {
-            viewAllEmployees();
+        if (choices === 'View all Employees') {
+            viewAllEmps();
         }
         if (choices === 'View Employees by Department') {
-            
+            viewEmpByDep();
         }
         if (choices === 'View Department Budgets') {
-
+            viewBudgets();
         }
         if (choices === 'Add a Department') {
-
+            addDep();
         }
         if (choices === 'Add a Role') {
-
+            addRole();
         } 
         if (choices === 'Add an Employee') {
-
+            addEmp();
         }
         if (choices === 'Update Employee Role') {
-
+            updateRole();
         }
         if (choices === 'Update Employee Manager') {
-
+            updateManager();
         }
         if (choices === 'Delete a Department') {
-
+            deleteDep();
         }
         if (choices === 'Delete a Role') {
-
+            deleteRole();
         }
         if (choices === 'Remove an Employee') {
-
+            deleteEmp()
         }
         if (choices === 'Exit') {
             db.end()
@@ -98,8 +100,8 @@ const promptUser = () => {
 }
 
 
-// // ---------------------------------- VIEW -------------------//
-const viewAllDepartments = () => {
+// ---------------------------------- VIEW -------------------//
+const viewAllDeps = () => {
     const sql = `SELECT department.name AS Departments FROM department`;
 
     db.promise().query(sql)
@@ -111,4 +113,108 @@ const viewAllDepartments = () => {
     .then( () => {
         promptUser();
     })
+};
+
+const viewAllRoles = () => {
+    const sql = `SELECT role.title AS Roles FROM role`;
+
+    db.promise().query(sql)
+    .then( ([rows, fields]) => {
+        console.log('')
+        console.table(rows);
+    })
+    .catch(console.log)
+    .then( () => {
+        promptUser();
+    })
+};
+
+const viewAllEmps = () => {
+    const sql = `SELECT employee.first_name AS First,
+                employee.last_name AS Last
+                FROM employee`;
+    
+    db.promise().query(sql)
+    .then( ([rows, fields]) => {
+        console.log('')
+        console.table(rows);
+    })
+    .catch(console.log)
+    .then( () => {
+        promptUser();
+    })
+}
+
+const viewEmpByDep = () => {
+    const sql = ``;
+
+    db.promise().query(sql)
+    .then( ([rows, fields]) => {
+        console.log('')
+        console.table(rows);
+    })
+    .catch(console.log)
+    .then( () => {
+        promptUser();
+    })
+}
+
+const viewBudgets = () => {
+    const sql = '';
+
+    db.promise().query(sql)
+    .then( ([rows, fields]) => {
+        console.log('')
+        console.table(rows);
+    })
+    .catch(console.log)
+    .then( () => {
+        promptUser();
+    })
+}
+
+
+
+
+// ------------------------- ADD --------------------- //
+
+const addDep = () => {
+
+};
+
+const addRole = () => {
+    
+};
+
+const addEmp = () => {
+    
+};
+
+
+
+// ---------------------- UPDATE -------------------- //
+
+const updateRole = () => {
+
+};
+
+const updateManager = () => {
+
+};
+
+
+
+
+// --------------------- DELETE --------------------- // 
+
+const deleteDep = () => {
+
+};
+
+const deleteRole = () => {
+
+};
+
+const deleteEmp = () => {
+
 };
