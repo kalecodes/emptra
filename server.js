@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const db = require('./config/connection');
+const cTable = require('console.table');
 
 
 // app.use routes go here
@@ -91,6 +92,7 @@ const promptUser = () => {
         }
         if (choices === 'Exit') {
             db.end()
+            console.log("You have chosen to exit the application. To re-start, enter 'npm start'!")
         }
     })
 }
@@ -98,15 +100,15 @@ const promptUser = () => {
 
 // // ---------------------------------- VIEW -------------------//
 const viewAllDepartments = () => {
-    const sql = `SELECT department.name AS Department FROM department`;
+    const sql = `SELECT department.name AS Departments FROM department`;
 
     db.promise().query(sql)
-    .then( ([rows,fields]) => {
-        console.log(rows);
+    .then( ([rows, fields]) => {
+        console.log('')
+        console.table(rows);
     })
     .catch(console.log)
     .then( () => {
-        db.end()
         promptUser();
     })
 };
