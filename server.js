@@ -1,11 +1,6 @@
 const inquirer = require('inquirer');
 const db = require('./config/connection');
 const cTable = require('console.table');
-const { allowedNodeEnvironmentFlags } = require('process');
-const { ADDRGETNETWORKPARAMS } = require('dns');
-
-
-// app.use routes go here
 
 
 db.connect(err => {
@@ -102,7 +97,10 @@ const promptUser = () => {
 
 // ---------------------------------- VIEW -------------------//
 const viewAllDeps = () => {
-    const sql = `SELECT department.name AS Departments FROM department`;
+    const sql = `SELECT id,
+                name AS Department
+                FROM department
+                ORDER BY name ASC`;
 
     db.promise().query(sql)
     .then( ([rows, fields]) => {
@@ -116,7 +114,12 @@ const viewAllDeps = () => {
 };
 
 const viewAllRoles = () => {
-    const sql = `SELECT role.title AS Roles FROM role`;
+    const sql = `SELECT role.id, 
+                role.title AS Role,
+                department.name AS Department,
+                role.salary AS Salary
+                FROM role
+                LEFT JOIN department ON role.department_id = department.id`;
 
     db.promise().query(sql)
     .then( ([rows, fields]) => {
@@ -130,9 +133,17 @@ const viewAllRoles = () => {
 };
 
 const viewAllEmps = () => {
-    const sql = `SELECT employee.first_name AS First,
-                employee.last_name AS Last
-                FROM employee`;
+    const sql = `SELECT employee.id,
+                employee.first_name,
+                employee.last_name,
+                role.title AS Role,
+                department.name AS Department,
+                role.salary AS Salary,
+                CONCAT (manager.first_name, " ", manager.last_name) AS Manager
+                FROM employee
+                LEFT JOIN role ON employee.role_id = role.id
+                LEFT JOIN department ON role.department_id = department.id
+                LEFT JOIN employee manager ON employee.manager_id = manager.id;`;
     
     db.promise().query(sql)
     .then( ([rows, fields]) => {
@@ -179,15 +190,18 @@ const viewBudgets = () => {
 // ------------------------- ADD --------------------- //
 
 const addDep = () => {
-
+    console.log("choice selected");
+    promptUser();
 };
 
 const addRole = () => {
-    
+    console.log("choice selected");
+    promptUser();
 };
 
 const addEmp = () => {
-    
+    console.log("choice selected");
+    promptUser();
 };
 
 
@@ -195,11 +209,13 @@ const addEmp = () => {
 // ---------------------- UPDATE -------------------- //
 
 const updateRole = () => {
-
+    console.log("choice selected");
+    promptUser();
 };
 
 const updateManager = () => {
-
+    console.log("choice selected");
+    promptUser();
 };
 
 
@@ -208,13 +224,16 @@ const updateManager = () => {
 // --------------------- DELETE --------------------- // 
 
 const deleteDep = () => {
-
+    console.log("choice selected");
+    promptUser();
 };
 
 const deleteRole = () => {
-
+    console.log("choice selected");
+    promptUser();
 };
 
 const deleteEmp = () => {
-
+    console.log("choice selected");
+    promptUser();
 };
