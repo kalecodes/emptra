@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS business;
-CREATE DATABASE business;
+DROP DATABASE IF EXISTS business_db;
+CREATE DATABASE business_db;
 
-USE business;
+USE business_db;
 
 DROP TABLE IF EXISTS emplpyee;
 DROP TABLE IF EXISTS role;
