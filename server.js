@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const db = require('./config/connection');
 const cTable = require('console.table');
+const { query } = require('./config/connection');
 
 
 db.connect(err => {
@@ -147,7 +148,7 @@ const viewAllEmps = () => {
                 FROM employee
                 LEFT JOIN role ON employee.role_id = role.id
                 LEFT JOIN department ON role.department_id = department.id
-                LEFT JOIN employee manager ON employee.manager_id = manager.id;`;
+                LEFT JOIN employee manager ON employee.manager_id = manager.id`;
     
     db.promise().query(sql)
     .then( ([rows, fields]) => {
@@ -273,8 +274,8 @@ const addEmp = () => {
             type: 'input',
             name: 'lastName',
             message: "What is the last name of the employee you would like to add?",
-            validate: salary => {
-                if (salary) {
+            validate: lastName => {
+                if (lastName) {
                     return true;
                 } else {
                     console.log('Please enter a name');
@@ -341,9 +342,70 @@ const addEmp = () => {
 // ---------------------- UPDATE -------------------- //
 
 const updateRole = () => {
-    console.log("choice selected");
-    promptUser();
-};
+    let empSql = `SELECT id, first_name, last_name FROM employee`;
+
+    db.promise().query(empSql)
+    .then( ([rows, fields]) => {
+        console.log('')
+        console.table(rows);
+    }).then(() => {
+        let roleSql = 'SELECT id, title FROM role';
+
+        db.promise().query(roleSql)
+        .then( ([rows, fields]) => {
+            console.log('')
+            console.table(rows);
+        }).then( () => {
+            inquirer.prompt([
+                {
+                    type: 'input',
+                    name: 'employeeToUpdate',
+                    message: 'Please input the ID of the employee whose role you want to update,',
+                    validate: employeeToUpdate => {
+                        if (employeeToUpdate) {
+                            return true;
+                        } else {
+                            console.log('Please enter a valid ID');
+                            return false;
+                        }
+                    }
+                },
+                {
+                    type: 'input',
+                    name: 'roleToUpdate',
+                    message: 'Please enter the ID of the role you wish to set for the employee.',
+                    validate: roleToUpdate => {
+                        if (roleToUpdate) {
+                            return true;
+                        } else {
+                            console.log('Please enter a valid ID');
+                            return false;
+                        }
+                    }
+                }
+            ])
+            .then(response => {
+                const employeeId = response.employeeToUpdate;
+                const roleId = response.roleToUpdate;
+                const updateSql = `UPDATE employee SET role_id = ${roleId} WHERE id = ${employeeId}`;
+                db.promise().query(updateSql)
+                .then( () => {
+                    const returnSql = `SELECT * FROM employee WHERE id = ${employeeId}`;
+                    db.promise().query(returnSql)
+                    .then( ([rows, fields]) => {
+                        console.log('')
+                        console.table(rows);
+                    })
+                    .then( () => {
+                        promptUser();
+                    })
+                })
+            })
+        })
+        .catch(console.log)
+    })
+    .catch(console.log)
+}
 
 
 
