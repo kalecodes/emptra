@@ -2,6 +2,7 @@ const inquirer = require('inquirer');
 const db = require('./config/connection');
 const cTable = require('console.table');
 const { query } = require('./config/connection');
+const e = require('express');
 
 
 db.connect(err => {
@@ -33,8 +34,8 @@ const promptUser = () => {
                 'View all Departments', 
                 'View all Roles', 
                 'View all Employees',
-                // 'View Employees by Department',
-                // 'View Employees by Manager',
+                'View Employees by Department',
+                'View Employees by Manager',
                 // 'View Department Budgets',
                 'Add a Department', 
                 'Add a Role', 
@@ -59,12 +60,12 @@ const promptUser = () => {
         if (choices === 'View all Employees') {
             viewAllEmps();
         }
-        // if (choices === 'View Employees by Department') {
-        //     viewEmpByDep();
-        // }
-        // if (choices === 'View Employees by Manager') {
-        //     viewEmpByMan();
-        // }
+        if (choices === 'View Employees by Department') {
+            viewEmpByDep();
+        }
+        if (choices === 'View Employees by Manager') {
+            viewEmpByMan();
+        }
         // if (choices === 'View Department Budgets') {
         //     viewBudgets();
         // }
@@ -412,30 +413,82 @@ const updateRole = () => {
 
 
 const viewEmpByDep = () => {
-    const sql = ``;
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'depSelect',
+            message: 'Which department would you like to see employees of? 1- Accounting & Finance, 2- IT, 3- Sales & Marketing, 4- Operations',
+            choices: [
+                "1",
+                "2",
+                "3",
+                "4"
+            ]
+        }
+    ]).then((answer) => {
+        const sql = `SELECT employee.id,
+                    employee.first_name,
+                    employee.last_name,
+                    role.title AS Role,
+                    department.name AS Department,
+                    role.salary AS Salary,
+                    CONCAT (manager.first_name, " ", manager.last_name) AS Manager
+                    FROM employee
+                    LEFT JOIN role ON employee.role_id = role.id
+                    LEFT JOIN department ON role.department_id = department.id
+                    LEFT JOIN employee manager ON employee.manager_id = manager.id
+                    WHERE department_id = (?)`;
+        const params = [answer.depSelect];
 
-    db.promise().query(sql)
-    .then( ([rows, fields]) => {
-        console.log('')
-        console.table(rows);
-    })
-    .catch(console.log)
-    .then( () => {
-        promptUser();
+        db.promise().query(sql, params)
+        .then( ([rows, fields]) => {
+            console.log('')
+            console.table(rows);
+        })
+        .catch(console.log)
+        .then( () => {
+            promptUser();
+        })
     })
 }
 
 const viewEmpByMan = () => {
-    const sql = ``;
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'manSelect',
+            message: 'Which manager would you like to see employees of? 1- Richard Spence, 2- Monty Money, 3- Harry Styles, 4- Nicki Minaj',
+            choices: [
+                "1",
+                "2",
+                "3",
+                "4"
+            ]
+        }
+    ]).then((answer) => {
+        const sql = `SELECT employee.id,
+                    employee.first_name,
+                    employee.last_name,
+                    role.title AS Role,
+                    department.name AS Department,
+                    role.salary AS Salary,
+                    CONCAT (manager.first_name, " ", manager.last_name) AS Manager
+                    FROM employee
+                    LEFT JOIN role ON employee.role_id = role.id
+                    LEFT JOIN department ON role.department_id = department.id
+                    LEFT JOIN employee manager ON employee.manager_id = manager.id
+                    WHERE employee.manager_id = (?)`;
+        const params = [answer.manSelect];
 
-    db.promise().query(sql)
-    .then( ([rows, fields]) => {
-        console.log('')
-        console.table(rows);
-    })
-    .catch(console.log)
-    .then( () => {
-        promptUser();
+        db.promise().query(sql, params)
+        .then( ([rows, fields]) => {
+            console.log('')
+            console.table(rows);
+        })
+        .catch(console.log)
+        .then( () => {
+            promptUser();
+        })
     })
 }
 
