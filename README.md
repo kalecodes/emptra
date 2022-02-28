@@ -1,8 +1,6 @@
 # emptra
 Command Line Employee Tracker
 
- # emptra
-
   [![license](https://img.shields.io/badge/license-None-blue)](https://shields.io)
 
   ## Description
