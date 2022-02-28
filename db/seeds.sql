@@ -11,7 +11,7 @@ VALUES
 ('Financial Analyst', 75000, 1),
 ('UI/UX Designer', 68000, 2),
 ('Software Developer', 90000, 2),
-('Full Stack Enginerr', 110000, 2),
+('Full Stack Engineer', 110000, 2),
 ('Project Manager', 80000, 4),
 ('Operations Manager', 85000, 4),
 ('Marketing Manager', 70000, 3),

@@ -287,7 +287,7 @@ const addEmp = () => {
             type: 'choices',
             name: 'role',
             // need to update this to explain roles or dynamically update
-            message: "What role will this employee hold? .........." ,
+            message: "What role will this employee hold? 1- Accountant, 2- Financial Analyst, 3- UI/UX Designer, 4- Software Developer, 5- Full Stack Engineer, 6- Project Manager, 7- Operations Manager, 8- Marketing Manager, 9- Sales Lead, 10- Sales Development Manager" ,
             choices: [
                 "1",
                 "2",
@@ -305,7 +305,7 @@ const addEmp = () => {
             type: 'choices',
             name: 'manager',
             // need to update this to explain roles or dynamically update
-            message: "Who will this employee report to? .........." ,
+            message: "Who will this employee report to? 1- Richard Spence, 2- Monty Money, 3- Harry Styles, 4- Nicki Minaj, 5- Kalen Wiley, 6- Kyle Molder, 7- Rebecca Lakes, 8- Crystal Geiser, 9- Hannah Malley, 10- Harrison Hughes",
             choices: [
                 "1",
                 "2",
@@ -316,9 +316,7 @@ const addEmp = () => {
                 "7",
                 "8",
                 "9",
-                "10",
-                "11",
-                "12"
+                "10"
             ]
         }
     ])
